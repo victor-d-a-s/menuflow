@@ -1,8 +1,4 @@
-'use client';
-export const runtime = 'edge';
-'use client';
-'use client';
-export const runtime = 'edge';
+export const dynamic = 'force-dynamic'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { getServerUser } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
