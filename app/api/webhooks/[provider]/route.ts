@@ -2,11 +2,8 @@ export const dynamic = "force-dynamic";
 // ✅ next/server (não next/response)
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+const supabaseAdmin = process.env.NEXT_PUBLIC_SUPABASE_URL ? createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY!) : null as any;
 
-const supabaseAdmin = process.env.NEXT_PUBLIC_SUPABASE_URL createClient(createClient( createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
 
 export async function POST(
   req: Request,
