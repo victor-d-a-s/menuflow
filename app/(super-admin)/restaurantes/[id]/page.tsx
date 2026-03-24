@@ -1,4 +1,3 @@
-export const runtime = "edge";
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { getServerUser } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
