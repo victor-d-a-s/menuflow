@@ -1,4 +1,6 @@
 'use client';
+export const runtime = 'edge';
+'use client';
 'use client';
 export const runtime = 'edge';
 import { createClient as createAdminClient } from '@supabase/supabase-js'
