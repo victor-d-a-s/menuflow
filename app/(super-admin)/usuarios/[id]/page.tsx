@@ -127,7 +127,7 @@ export default async function DetalheUsuarioPage({ params }: { params: { id: str
 
       <UserDetailClient
         profile={targetProfile}
-        authUser={authUser}
+        authUser={authUser as any}
         restaurants={restaurants || []}
         isBanned={isBanned}
       />
