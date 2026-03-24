@@ -77,7 +77,6 @@
     --sidebar-ring: oklch(0.556 0 0)
   }
   * {
-    @apply border-border outline-ring/50;
   }
   body {
     background-color: hsl(var(--background)); color: hsl(var(--foreground));
@@ -94,7 +93,6 @@
     --border: 217.2 32.6% 17.5%;
   }
   * {
-    @apply border-border;
   }
 }
 
