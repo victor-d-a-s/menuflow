@@ -244,7 +244,7 @@ export function MenuManager({ restaurantId, categories: initialCategories, produ
         categories={categories}
         open={sheetOpen}
         onOpenChange={setSheetOpen}
-        initialData={productToEdit}
+        initialData={productToEdit as any}
       />
     </div>
   )
