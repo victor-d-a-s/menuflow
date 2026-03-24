@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import { getServerUser } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { CreateRestaurantForm } from './components/create-restaurant-form'
