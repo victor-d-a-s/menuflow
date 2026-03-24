@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation'
 import { Settings as SettingsIcon } from 'lucide-react'
 import { SettingsTabs } from './components/settings-tabs'
 
-export const dynamic = 'force-dynamic'
 
 export default async function ConfiguracoesPage() {
   // ✅ getServerUser() retorna { user, profile }

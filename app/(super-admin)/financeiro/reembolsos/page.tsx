@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge'
 import { Undo2, History } from 'lucide-react'
 import { RefundManager } from './components/refund-manager'
 
-export const dynamic = 'force-dynamic'
 
 export default async function ReembolsosPage() {
   // ✅ getServerUser() retorna { user, profile }

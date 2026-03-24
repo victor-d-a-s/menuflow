@@ -10,7 +10,6 @@ import { Badge } from '@/components/ui/badge'
 import { Activity, DollarSign, TrendingUp, CreditCard, AlertTriangle, Clock } from 'lucide-react'
 import { FinancialFilters, ReactivateButton } from './components/client-components'
 
-export const dynamic = 'force-dynamic'
 
 export default async function FinanceiroPage({
   searchParams,
