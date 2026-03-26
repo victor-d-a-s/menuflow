@@ -16,10 +16,17 @@ export default function LoginPage() {
     e.preventDefault()
     setError('')
     startTransition(async () => {
-      const supabase = createClient()
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
-      if (error) setError('E-mail ou senha incorretos.')
-      else router.push('/')
+      try {
+        const supabase = createClient()
+        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        if (error) {
+          setError(`Erro: ${error.message}`)
+        } else {
+          router.push('/')
+        }
+      } catch (err: any) {
+        setError(`Exceção: ${err?.message || JSON.stringify(err)}`)
+      }
     })
   }
 
@@ -49,7 +56,7 @@ export default function LoginPage() {
               className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-orange-500"
             />
           </div>
-          {error && <p className="text-red-400 text-xs">{error}</p>}
+          {error && <p className="text-red-400 text-xs bg-red-950 p-2 rounded">{error}</p>}
           <button
             type="submit"
             disabled={isPending}
