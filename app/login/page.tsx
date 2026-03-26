@@ -22,7 +22,7 @@ export default function LoginPage() {
         if (error) {
           setError(`Erro: ${error.message}`)
         } else {
-          router.push('/')
+          window.location.href = '/'
         }
       } catch (err: any) {
         setError(`Exceção: ${err?.message || JSON.stringify(err)}`)
