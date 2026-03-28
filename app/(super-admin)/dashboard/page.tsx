@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 export default function SuperAdminDashboard() {
   return (
     <div className="p-8">
