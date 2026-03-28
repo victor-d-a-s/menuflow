@@ -72,7 +72,7 @@ export function SettingsTabs({ settings, gatewayUsage, envStatus, plans, baseUrl
 
       {/* TAB 1: GATEWAYS */}
       <TabsContent value="gateways" className="space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {[
             { id: 'pagarme',     name: 'Pagar.me',      env: envStatus.pagarme,     activeKey: 'gateway_pagarme_active' },
             { id: 'mercadopago', name: 'Mercado Pago',   env: envStatus.mercadopago, activeKey: 'gateway_mercadopago_active' },
@@ -104,7 +104,7 @@ export function SettingsTabs({ settings, gatewayUsage, envStatus, plans, baseUrl
                 </div>
                 <div className="space-y-2 pt-2">
                   <p className="text-xs font-semibold text-muted-foreground uppercase">URL do Webhook</p>
-                  <code className="block text-xs bg-muted p-2 rounded break-all text-xs border">
+                  <code className="block text-xs bg-muted p-2 rounded break-all text-[10px] leading-tight border">
                     {baseUrl}/api/webhooks/{gw.id}
                   </code>
                 </div>
