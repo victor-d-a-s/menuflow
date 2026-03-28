@@ -104,7 +104,7 @@ export function SettingsTabs({ settings, gatewayUsage, envStatus, plans, baseUrl
                 </div>
                 <div className="space-y-2 pt-2">
                   <p className="text-xs font-semibold text-muted-foreground uppercase">URL do Webhook</p>
-                  <code className="block text-xs bg-muted p-2 rounded break-all border">
+                  <code className="block text-xs bg-muted p-2 rounded break-all text-xs border">
                     {baseUrl}/api/webhooks/{gw.id}
                   </code>
                 </div>
