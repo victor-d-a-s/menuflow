@@ -1,4 +1,4 @@
-// FILE: app/(super-admin)/restaurantes/[id]/cardapio/actions.ts
+// FILE: app/super-admin/restaurantes/[id]/cardapio/actions.ts
 'use server'
 
 import { z } from 'zod'
