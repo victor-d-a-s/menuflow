@@ -1,4 +1,5 @@
 'use client'
+export const runtime = 'edge'
 
 import { useEffect, useTransition } from 'react'
 import { useForm } from 'react-hook-form'

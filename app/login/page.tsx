@@ -1,5 +1,5 @@
-export const runtime = 'edge'
 'use client'
+export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
 
 import { useState, useTransition } from 'react'

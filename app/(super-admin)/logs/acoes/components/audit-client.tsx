@@ -1,4 +1,5 @@
 'use client'
+export const runtime = 'edge'
 
 import { useState, useTransition, Fragment } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
