@@ -162,7 +162,7 @@ export function EditRestaurantForm({ restaurant }: { restaurant: Restaurant }) {
             <FormItem><FormLabel>Plano</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                <SelectContent>
+                <SelectContent position="popper">
                   <SelectItem value="basico">Básico</SelectItem>
                   <SelectItem value="pro">Pro</SelectItem>
                   <SelectItem value="ultra">Ultra</SelectItem>
@@ -175,7 +175,7 @@ export function EditRestaurantForm({ restaurant }: { restaurant: Restaurant }) {
             <FormItem><FormLabel>Status do Plano</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                <SelectContent>
+                <SelectContent position="popper">
                   <SelectItem value="trial">Trial</SelectItem>
                   <SelectItem value="active">Ativo</SelectItem>
                   <SelectItem value="suspended">Suspenso</SelectItem>
@@ -212,7 +212,7 @@ export function EditRestaurantForm({ restaurant }: { restaurant: Restaurant }) {
             <FormItem className="col-span-full md:col-span-1"><FormLabel>Gateway Padrão</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                <SelectContent>
+                <SelectContent position="popper">
                   <SelectItem value="pagarme">Pagar.me</SelectItem>
                   <SelectItem value="mercadopago">Mercado Pago</SelectItem>
                   <SelectItem value="stripe">Stripe</SelectItem>

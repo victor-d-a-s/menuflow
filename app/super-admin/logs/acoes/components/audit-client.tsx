@@ -87,7 +87,7 @@ export function AuditLogsClient({ logs, admins, distinctActions }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-card p-4 rounded-lg border">
         <Select value={admin} onValueChange={handleAdminChange}>
           <SelectTrigger><SelectValue placeholder="Administrador" /></SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper">
             <SelectItem value="todos">Todos Administradores</SelectItem>
             {admins.map(a => <SelectItem key={a.id} value={a.id}>{a.full_name}</SelectItem>)}
           </SelectContent>
@@ -95,7 +95,7 @@ export function AuditLogsClient({ logs, admins, distinctActions }: Props) {
 
         <Select value={actionFilter} onValueChange={handleActionChange}>
           <SelectTrigger><SelectValue placeholder="Tipo de Ação" /></SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper">
             <SelectItem value="todos">Todas as Ações</SelectItem>
             {distinctActions.map(act => <SelectItem key={act} value={act}>{act}</SelectItem>)}
           </SelectContent>
@@ -103,7 +103,7 @@ export function AuditLogsClient({ logs, admins, distinctActions }: Props) {
 
         <Select value={entity} onValueChange={handleEntityChange}>
           <SelectTrigger><SelectValue placeholder="Entidade" /></SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper">
             <SelectItem value="todos">Todas as Entidades</SelectItem>
             <SelectItem value="restaurant">Restaurante</SelectItem>
             <SelectItem value="user">Usuário</SelectItem>
@@ -116,7 +116,7 @@ export function AuditLogsClient({ logs, admins, distinctActions }: Props) {
         <div className="flex items-center gap-2">
           <Select value={periodo} onValueChange={handlePeriodoChange}>
             <SelectTrigger className="flex-1"><SelectValue placeholder="Período" /></SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper">
               <SelectItem value="hoje">Hoje</SelectItem>
               <SelectItem value="7d">Últimos 7 dias</SelectItem>
               <SelectItem value="30d">Últimos 30 dias</SelectItem>

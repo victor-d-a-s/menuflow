@@ -69,7 +69,7 @@ export default function CadastroPage() {
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione um plano" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper">
                   <SelectItem value="basico">Básico (R$89/mês)</SelectItem>
                   <SelectItem value="pro">Pro (R$179/mês)</SelectItem>
                   <SelectItem value="ultra">Ultra (R$299/mês)</SelectItem>

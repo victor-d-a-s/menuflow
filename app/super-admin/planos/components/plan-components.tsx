@@ -168,7 +168,7 @@ export function OverrideForm({ restaurants, plans }: { restaurants: Restaurant[]
           <Label>Restaurante</Label>
           <Select value={restId} onValueChange={handleSelectRestaurant}>
             <SelectTrigger><SelectValue placeholder="Buscar..." /></SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper">
               {restaurants.map(r => <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>)}
             </SelectContent>
           </Select>
@@ -177,7 +177,7 @@ export function OverrideForm({ restaurants, plans }: { restaurants: Restaurant[]
           <Label>Plano</Label>
           <Select value={selectedPlan} onValueChange={setSelectedPlan} disabled={!restId}>
             <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper">
               {plans.map(p => <SelectItem key={p.slug} value={p.slug}>{p.name}</SelectItem>)}
             </SelectContent>
           </Select>

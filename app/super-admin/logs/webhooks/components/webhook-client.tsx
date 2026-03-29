@@ -52,7 +52,7 @@ export function WebhookLogsClient({ logs }: { logs: WebhookLog[] }) {
       <div className="flex flex-col sm:flex-row gap-4 bg-card p-4 rounded-lg border">
         <Select value={provider} onValueChange={handleProviderChange}>
           <SelectTrigger className="w-full sm:w-[180px]"><SelectValue placeholder="Provider" /></SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper">
             <SelectItem value="todos">Todos Providers</SelectItem>
             <SelectItem value="pagarme">Pagar.me</SelectItem>
             <SelectItem value="mercadopago">Mercado Pago</SelectItem>
@@ -62,7 +62,7 @@ export function WebhookLogsClient({ logs }: { logs: WebhookLog[] }) {
 
         <Select value={status} onValueChange={handleStatusChange}>
           <SelectTrigger className="w-full sm:w-[180px]"><SelectValue placeholder="Status" /></SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper">
             <SelectItem value="todos">Todos os Status</SelectItem>
             <SelectItem value="processed">Processados (OK)</SelectItem>
             <SelectItem value="failed">Falhas (Erro)</SelectItem>
@@ -72,7 +72,7 @@ export function WebhookLogsClient({ logs }: { logs: WebhookLog[] }) {
 
         <Select value={periodo} onValueChange={handlePeriodoChange}>
           <SelectTrigger className="w-full sm:w-[180px]"><SelectValue placeholder="Período" /></SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper">
             <SelectItem value="hoje">Hoje</SelectItem>
             <SelectItem value="7d">Últimos 7 dias</SelectItem>
             <SelectItem value="30d">Últimos 30 dias</SelectItem>

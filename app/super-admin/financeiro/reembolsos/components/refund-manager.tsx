@@ -200,7 +200,7 @@ export function RefundManager() {
                 <Label>Motivo</Label>
                 <Select value={reason} onValueChange={setReason}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper">
                     <SelectItem value="solicitacao_cliente">Solicitação do Cliente</SelectItem>
                     <SelectItem value="produto_indisponivel">Produto Indisponível</SelectItem>
                     <SelectItem value="erro_sistema">Erro Sistêmico</SelectItem>

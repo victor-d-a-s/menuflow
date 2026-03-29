@@ -92,7 +92,7 @@ export function CreateRestaurantForm() {
                   <FormLabel>Plano Inicial</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                    <SelectContent>
+                    <SelectContent position="popper">
                       <SelectItem value="basico">Básico</SelectItem>
                       <SelectItem value="pro">Pro</SelectItem>
                       <SelectItem value="ultra">Ultra</SelectItem>
@@ -107,7 +107,7 @@ export function CreateRestaurantForm() {
                   <FormLabel>Status</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                    <SelectContent>
+                    <SelectContent position="popper">
                       <SelectItem value="trial">Trial</SelectItem>
                       <SelectItem value="active">Ativo</SelectItem>
                     </SelectContent>
@@ -133,7 +133,7 @@ export function CreateRestaurantForm() {
                   <FormLabel>Gateway</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                    <SelectContent>
+                    <SelectContent position="popper">
                       <SelectItem value="pagarme">Pagar.me</SelectItem>
                       <SelectItem value="mercadopago">Mercado Pago</SelectItem>
                     </SelectContent>

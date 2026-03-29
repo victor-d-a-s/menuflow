@@ -33,7 +33,7 @@ export function OrderFilters({ restaurants }: { restaurants: Restaurant[] }) {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Select value={searchParams.get('restaurante') || 'todos'} onValueChange={val => updateParams({ restaurante: val })}>
           <SelectTrigger><SelectValue placeholder="Restaurante" /></SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper">
             <SelectItem value="todos">Todos os Restaurantes</SelectItem>
             {restaurants.map(r => <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>)}
           </SelectContent>
@@ -41,7 +41,7 @@ export function OrderFilters({ restaurants }: { restaurants: Restaurant[] }) {
 
         <Select value={searchParams.get('status') || 'todos'} onValueChange={val => updateParams({ status: val })}>
           <SelectTrigger><SelectValue placeholder="Status" /></SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper">
             <SelectItem value="todos">Todos os Status</SelectItem>
             <SelectItem value="pendente">Pendente</SelectItem>
             <SelectItem value="pago">Pago</SelectItem>
@@ -54,7 +54,7 @@ export function OrderFilters({ restaurants }: { restaurants: Restaurant[] }) {
 
         <Select value={searchParams.get('tipo') || 'todos'} onValueChange={val => updateParams({ tipo: val })}>
           <SelectTrigger><SelectValue placeholder="Tipo" /></SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper">
             <SelectItem value="todos">Todos os Tipos</SelectItem>
             <SelectItem value="delivery">Delivery</SelectItem>
             <SelectItem value="mesa">Mesa</SelectItem>

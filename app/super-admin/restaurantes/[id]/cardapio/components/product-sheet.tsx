@@ -95,7 +95,7 @@ export function ProductSheet({ restaurantId, categories, open, onOpenChange, ini
                 <FormLabel>Categoria *</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl><SelectTrigger><SelectValue placeholder="Selecione..." /></SelectTrigger></FormControl>
-                  <SelectContent>
+                  <SelectContent position="popper">
                     {categories.map(cat => (
                       <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
                     ))}

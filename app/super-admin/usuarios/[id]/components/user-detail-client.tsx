@@ -127,7 +127,7 @@ export function UserDetailClient({ profile, authUser, restaurants, isBanned: ini
                     <FormItem><FormLabel>Cargo</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                        <SelectContent>
+                        <SelectContent position="popper">
                           <SelectItem value="super_admin">Super Admin</SelectItem>
                           <SelectItem value="restaurant_admin">Admin do Restaurante</SelectItem>
                           <SelectItem value="kitchen">Cozinha/Operação</SelectItem>
@@ -141,7 +141,7 @@ export function UserDetailClient({ profile, authUser, restaurants, isBanned: ini
                       <FormItem><FormLabel>Restaurante Vinculado</FormLabel>
                         <Select onValueChange={field.onChange} value={field.value || 'none'}>
                           <FormControl><SelectTrigger><SelectValue placeholder="Selecione..." /></SelectTrigger></FormControl>
-                          <SelectContent>
+                          <SelectContent position="popper">
                             <SelectItem value="none">Nenhum</SelectItem>
                             {restaurants.map(rest => (
                               <SelectItem key={rest.id} value={rest.id}>{rest.name}</SelectItem>

@@ -66,7 +66,7 @@ export function RestaurantFilters() {
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Plano" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent position="popper">
           <SelectItem value="todos">Todos os Planos</SelectItem>
           <SelectItem value="basico">Básico</SelectItem>
           <SelectItem value="pro">Pro</SelectItem>
@@ -81,7 +81,7 @@ export function RestaurantFilters() {
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent position="popper">
           <SelectItem value="todos">Todos os Status</SelectItem>
           <SelectItem value="trial">Trial</SelectItem>
           <SelectItem value="active">Ativo</SelectItem>

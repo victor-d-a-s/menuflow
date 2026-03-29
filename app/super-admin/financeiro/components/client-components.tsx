@@ -61,7 +61,7 @@ export function FinancialFilters() {
         <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">Período:</span>
         <Select value={preset} onValueChange={handlePresetChange}>
           <SelectTrigger className="w-[180px]"><SelectValue placeholder="Selecione..." /></SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper">
             <SelectItem value="hoje">Hoje</SelectItem>
             <SelectItem value="7d">Últimos 7 dias</SelectItem>
             <SelectItem value="30d">Últimos 30 dias</SelectItem>

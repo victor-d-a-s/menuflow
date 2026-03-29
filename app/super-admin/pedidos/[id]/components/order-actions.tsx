@@ -55,7 +55,7 @@ export function OrderSupportActions({ orderId, currentStatus: initialStatus }: P
           <SelectTrigger className="w-[180px] bg-background">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent position="popper">
             <SelectItem value="pendente">Pendente</SelectItem>
             <SelectItem value="pago">Pago</SelectItem>
             <SelectItem value="preparando">Preparando</SelectItem>
