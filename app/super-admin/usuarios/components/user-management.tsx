@@ -69,7 +69,7 @@ export function NewUserDialog({ restaurants }: { restaurants: Restaurant[] }) {
               <FormItem><FormLabel>Cargo *</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
-                  <SelectContent position="popper"
+                  <SelectContent position="popper">
                     <SelectItem value="super_admin">Super Admin</SelectItem>
                     <SelectItem value="restaurant_admin">Admin do Restaurante</SelectItem>
                     <SelectItem value="kitchen">Cozinha/Operação</SelectItem>
@@ -83,7 +83,7 @@ export function NewUserDialog({ restaurants }: { restaurants: Restaurant[] }) {
                 <FormItem><FormLabel>Vincular ao Restaurante *</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl><SelectTrigger><SelectValue placeholder="Selecione o restaurante" /></SelectTrigger></FormControl>
-                    <SelectContent position="popper"
+                    <SelectContent position="popper">
                       <SelectItem value="none">Selecione...</SelectItem>
                       {restaurants.map(rest => (
                         <SelectItem key={rest.id} value={rest.id}>{rest.name}</SelectItem>
@@ -145,7 +145,7 @@ export function UserFilters({ restaurants }: { restaurants: Restaurant[] }) {
       </div>
       <Select value={searchParams.get('role') || 'todos'} onValueChange={(val) => updateParams({ role: val })}>
         <SelectTrigger className="w-[200px]"><SelectValue placeholder="Cargo" /></SelectTrigger>
-        <SelectContent position="popper"
+        <SelectContent position="popper">
           <SelectItem value="todos">Todos os Cargos</SelectItem>
           <SelectItem value="super_admin">Super Admin</SelectItem>
           <SelectItem value="restaurant_admin">Admin do Restaurante</SelectItem>
@@ -154,7 +154,7 @@ export function UserFilters({ restaurants }: { restaurants: Restaurant[] }) {
       </Select>
       <Select value={searchParams.get('restaurante') || 'todos'} onValueChange={(val) => updateParams({ restaurante: val })}>
         <SelectTrigger className="w-[220px]"><SelectValue placeholder="Restaurante" /></SelectTrigger>
-        <SelectContent position="popper"
+        <SelectContent position="popper">
           <SelectItem value="todos">Todos os Restaurantes</SelectItem>
           {restaurants.map(rest => (
             <SelectItem key={rest.id} value={rest.id}>{rest.name}</SelectItem>
