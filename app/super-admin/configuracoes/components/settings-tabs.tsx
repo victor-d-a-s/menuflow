@@ -4,171 +4,235 @@ export const runtime = 'edge'
 import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import { updatePlatformSetting, forceSyncAllRoles } from '../actions'
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, Save, CreditCard, Mail, Settings, RefreshCw, CheckCircle2, XCircle, Globe } from 'lucide-react'
+import { Loader2, Save, CreditCard, Mail, Settings, RefreshCw, CheckCircle2, XCircle } from 'lucide-react'
 
 interface Plan { id: string; name: string; default_fee_pct: number }
-type Props = { settings: Record<string,string>; gatewayUsage: Record<string,number>; envStatus: Record<string,boolean>; plans: Plan[]; baseUrl: string }
 
-const tabs = [
-  { id: 'gateways', label: 'Gateways', icon: CreditCard },
-  { id: 'emails', label: 'E-mails', icon: Mail },
-  { id: 'dominios', label: 'Domínios', icon: Globe },
-  { id: 'sistema', label: 'Sistema', icon: Settings },
-]
+type SettingsTabsProps = {
+  settings: Record<string, string>
+  gatewayUsage: Record<string, number>
+  envStatus: Record<string, boolean>
+  plans: Plan[]
+  baseUrl: string
+}
 
-export function SettingsTabs({ settings, gatewayUsage, envStatus, plans, baseUrl }: Props) {
-  const [active, setActive] = useState('gateways')
+export function SettingsTabs({ settings, gatewayUsage, envStatus, plans, baseUrl }: SettingsTabsProps) {
   const [isPending, startTransition] = useTransition()
   const [form, setForm] = useState(settings)
 
-  const set = (k: string, v: string) => setForm(p => ({ ...p, [k]: v }))
-  const save = (k: string) => startTransition(async () => {
-    const r = await updatePlatformSetting(k, form[k] || '')
-    r.error ? toast.error(r.error) : toast.success('Salvo!')
-  })
+  const handleChange = (key: string, value: string) => {
+    setForm(prev => ({ ...prev, [key]: value }))
+  }
 
-  const gateways = [
-    { id: 'pagarme', name: 'Pagar.me', env: envStatus.pagarme, k: 'gateway_pagarme_active' },
-    { id: 'mercadopago', name: 'Mercado Pago', env: envStatus.mercadopago, k: 'gateway_mercadopago_active' },
-    { id: 'stripe', name: 'Stripe', env: envStatus.stripe, k: 'gateway_stripe_active' },
-  ]
+  const handleSaveSetting = (key: string) => {
+    startTransition(async () => {
+      const res = await updatePlatformSetting(key, form[key] || '')
+      if (res.error) toast.error(`Erro ao salvar: ${res.error}`)
+      else toast.success('Configuração salva com sucesso!')
+    })
+  }
 
-  const emailTemplates = [
-    { l: 'Boas Vindas', p: 'email_boas_vindas' },
-    { l: 'Trial Expirando', p: 'email_trial_expirando' },
-    { l: 'Suspensão', p: 'email_suspensao' },
-  ]
-
-  const domains = [
-    { k: 'domain_marketing', l: 'Site de Vendas', e: 'menuflow.com.br' },
-    { k: 'domain_app', l: 'Painel Admin', e: 'app.menuflow.com.br' },
-    { k: 'domain_cardapio', l: 'Cardápio Público', e: 'cardapio.menuflow.com.br' },
-    { k: 'domain_kds', l: 'Cozinha (KDS)', e: 'cozinha.menuflow.com.br' },
-  ]
+  const handleSyncRoles = () => {
+    startTransition(async () => {
+      toast.info('Iniciando sincronização de roles em lote...')
+      const res = await forceSyncAllRoles()
+      if (res.error) toast.error(res.error)
+      else toast.success(`Sincronização concluída! ${res.count} usuários atualizados.`)
+    })
+  }
 
   return (
-    <div className="space-y-6">
-      {/* Tabs navigation */}
-      <div className="flex flex-wrap gap-1 p-1 bg-muted rounded-xl border">
-        {tabs.map(t => (
-          <button key={t.id} onClick={() => setActive(t.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex-1 justify-center
-              ${active === t.id ? 'bg-background shadow text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>
-            <t.icon className="w-4 h-4" />{t.label}
-          </button>
-        ))}
-      </div>
+    <Tabs defaultValue="gateways" className="space-y-6">
+      <TabsList className="bg-muted/50 p-1 border">
+        <TabsTrigger value="gateways" className="data-[state=active]:bg-background">
+          <CreditCard className="w-4 h-4 mr-2" /> Gateways de Pagamento
+        </TabsTrigger>
+        <TabsTrigger value="emails" className="data-[state=active]:bg-background">
+          <Mail className="w-4 h-4 mr-2" /> Textos e E-mails
+        </TabsTrigger>
+        <TabsTrigger value="gerais" className="data-[state=active]:bg-background">
+          <Settings className="w-4 h-4 mr-2" /> Taxas e Sistema
+        </TabsTrigger>
+      </TabsList>
 
-      {/* GATEWAYS */}
-      {active === 'gateways' && (
-        <div className="space-y-4">
-          {gateways.map(gw => (
-            <div key={gw.id} className="bg-card border rounded-xl p-5">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <p className="font-semibold">{gw.name}</p>
+      {/* TAB 1: GATEWAYS */}
+      <TabsContent value="gateways" className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {[
+            { id: 'pagarme', name: 'Pagar.me', env: envStatus.pagarme, activeKey: 'gateway_pagarme_active' },
+            { id: 'mercadopago', name: 'Mercado Pago', env: envStatus.mercadopago, activeKey: 'gateway_mercadopago_active' },
+            { id: 'stripe', name: 'Stripe', env: envStatus.stripe, activeKey: 'gateway_stripe_active' },
+          ].map((gw) => (
+            <Card key={gw.id} className="relative">
+              <div className="absolute top-4 right-4 flex items-center gap-2">
+                <Switch
+                  checked={form[gw.activeKey] === 'true'}
+                  onCheckedChange={(val) => {
+                    handleChange(gw.activeKey, val.toString())
+                    handleSaveSetting(gw.activeKey)
+                  }}
+                  disabled={isPending}
+                />
+              </div>
+              <CardHeader>
+                <CardTitle className="text-xl">{gw.name}</CardTitle>
+                <div className="flex items-center gap-2 mt-2">
                   {gw.env
-                    ? <Badge className="bg-emerald-500 text-xs mt-1"><CheckCircle2 className="w-3 h-3 mr-1"/>Configurado</Badge>
-                    : <Badge variant="destructive" className="text-xs mt-1"><XCircle className="w-3 h-3 mr-1"/>Sem Env Vars</Badge>}
+                    ? <Badge className="bg-emerald-500"><CheckCircle2 className="w-3 h-3 mr-1" /> API Configurada</Badge>
+                    : <Badge variant="destructive"><XCircle className="w-3 h-3 mr-1" /> Faltam Env Vars</Badge>}
                 </div>
-                <Switch checked={form[gw.k]==='true'} onCheckedChange={v=>{set(gw.k,v.toString());save(gw.k)}} disabled={isPending}/>
-              </div>
-              <div className="flex justify-between text-sm mb-3">
-                <span className="text-muted-foreground">Restaurantes usando:</span>
-                <span className="font-bold">{gatewayUsage[gw.id]||0}</span>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground mb-1">URL do Webhook</p>
-                <code className="block text-xs bg-muted p-2 rounded border break-all">{baseUrl}/api/webhooks/{gw.id}</code>
-              </div>
-            </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center text-sm border-b pb-2">
+                  <span className="text-muted-foreground">Restaurantes utilizando:</span>
+                  <span className="font-bold">{gatewayUsage[gw.id] || 0}</span>
+                </div>
+                <div className="space-y-2 pt-2">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase">URL do Webhook</p>
+                  <code className="block text-xs bg-muted p-2 rounded break-all border">
+                    {baseUrl}/api/webhooks/{gw.id}
+                  </code>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
-      )}
+      </TabsContent>
 
-      {/* E-MAILS */}
-      {active === 'emails' && (
-        <div className="space-y-4">
-          <div className="bg-card border rounded-xl p-5 space-y-4">
-            <p className="font-semibold">Branding</p>
-            {[{k:'nome_plataforma',l:'Nome da Plataforma'},{k:'suporte_whatsapp',l:'WhatsApp de Suporte'}].map(f=>(
-              <div key={f.k} className="space-y-1">
-                <label className="text-sm font-medium">{f.l}</label>
+      {/* TAB 2: TEXTOS E E-MAILS */}
+      <TabsContent value="emails" className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Comunicação e Branding</CardTitle>
+            <CardDescription>Personalize os textos base e templates de e-mail disparados pelo sistema.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Nome da Plataforma</label>
                 <div className="flex gap-2">
-                  <Input value={form[f.k]||''} onChange={e=>set(f.k,e.target.value)}/>
-                  <Button variant="secondary" size="icon" onClick={()=>save(f.k)} disabled={isPending}><Save className="w-4 h-4"/></Button>
+                  <Input value={form.nome_plataforma || ''} onChange={(e) => handleChange('nome_plataforma', e.target.value)} />
+                  <Button variant="secondary" size="icon" onClick={() => handleSaveSetting('nome_plataforma')} disabled={isPending}>
+                    <Save className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
-            ))}
-          </div>
-          {emailTemplates.map(t=>(
-            <div key={t.p} className="bg-card border rounded-xl p-5 space-y-3">
-              <p className="font-semibold">{t.l}</p>
-              <Input placeholder="Assunto" value={form[`${t.p}_assunto`]||''} onChange={e=>set(`${t.p}_assunto`,e.target.value)}/>
-              <Textarea rows={3} placeholder="Corpo" value={form[`${t.p}_corpo`]||''} onChange={e=>set(`${t.p}_corpo`,e.target.value)} className="resize-none"/>
-              <Button size="sm" className="w-full" onClick={()=>{save(`${t.p}_assunto`);save(`${t.p}_corpo`)}} disabled={isPending}>
-                <Save className="w-4 h-4 mr-2"/>Salvar
-              </Button>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* DOMÍNIOS */}
-      {active === 'dominios' && (
-        <div className="space-y-4">
-          {domains.map(d=>(
-            <div key={d.k} className="bg-card border rounded-xl p-5">
-              <p className="font-semibold mb-3">{d.l}</p>
-              <div className="flex gap-2">
-                <Input value={form[d.k]||''} onChange={e=>set(d.k,e.target.value)} placeholder={d.e} className="font-mono text-sm"/>
-                <Button variant="secondary" size="icon" onClick={()=>save(d.k)} disabled={isPending}><Save className="w-4 h-4"/></Button>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">WhatsApp de Suporte</label>
+                <div className="flex gap-2">
+                  <Input value={form.suporte_whatsapp || ''} onChange={(e) => handleChange('suporte_whatsapp', e.target.value)} />
+                  <Button variant="secondary" size="icon" onClick={() => handleSaveSetting('suporte_whatsapp')} disabled={isPending}>
+                    <Save className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </div>
-          ))}
-          <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-xl p-3">
-            Após alterar, adicione o domínio no Cloudflare Pages.
-          </p>
-        </div>
-      )}
 
-      {/* SISTEMA */}
-      {active === 'sistema' && (
-        <div className="space-y-4">
-          <div className="bg-card border rounded-xl p-5 space-y-4">
-            <p className="font-semibold">Regras de Negócio</p>
-            <div className="space-y-1">
-              <label className="text-sm font-medium">Dias de Trial Padrão</label>
-              <div className="flex gap-2">
-                <Input type="number" value={form.default_trial_days||''} onChange={e=>set('default_trial_days',e.target.value)}/>
-                <Button variant="secondary" onClick={()=>save('default_trial_days')} disabled={isPending}>Salvar</Button>
-              </div>
-            </div>
-            <div className="space-y-2 pt-2 border-t">
-              <p className="text-sm font-medium">Taxas dos Planos</p>
-              {plans.map(p=>(
-                <div key={p.id} className="flex justify-between bg-muted p-3 rounded-lg text-sm">
-                  <span className="text-muted-foreground">{p.name}</span>
-                  <span className="font-bold">{p.default_fee_pct}%</span>
+            <div className="space-y-6 pt-6 border-t">
+              <h3 className="text-lg font-semibold">Templates de E-mail</h3>
+
+              {[
+                { label: 'E-mail de Boas Vindas', prefix: 'email_boas_vindas' },
+                { label: 'Alerta de Trial Expirando (3 dias antes)', prefix: 'email_trial_expirando' },
+                { label: 'Aviso de Suspensão (Inadimplência)', prefix: 'email_suspensao' },
+              ].map((template) => (
+                <div key={template.prefix} className="p-4 bg-muted/30 rounded-lg border space-y-4">
+                  <h4 className="font-medium">{template.label}</h4>
+                  <div className="space-y-2">
+                    <label className="text-xs text-muted-foreground">Assunto</label>
+                    <Input
+                      value={form[`${template.prefix}_assunto`] || ''}
+                      onChange={(e) => handleChange(`${template.prefix}_assunto`, e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs text-muted-foreground">Corpo do E-mail</label>
+                    <Textarea
+                      rows={3}
+                      value={form[`${template.prefix}_corpo`] || ''}
+                      onChange={(e) => handleChange(`${template.prefix}_corpo`, e.target.value)}
+                    />
+                  </div>
+                  <div className="flex justify-end">
+                    <Button size="sm" onClick={() => {
+                      handleSaveSetting(`${template.prefix}_assunto`)
+                      handleSaveSetting(`${template.prefix}_corpo`)
+                    }} disabled={isPending}>
+                      <Save className="w-4 h-4 mr-2" /> Salvar Template
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
-          <div className="bg-card border border-orange-200 rounded-xl p-5">
-            <p className="font-semibold text-orange-700 mb-1">Sincronização JWT</p>
-            <p className="text-xs text-muted-foreground mb-4">Força renovação de tokens de todos os usuários.</p>
-            <Button variant="outline" className="w-full border-orange-300 text-orange-700" disabled={isPending}
-              onClick={()=>startTransition(async()=>{const r=await forceSyncAllRoles();r.error?toast.error(r.error):toast.success(`${r.count} sincronizados!`)})}>
-              {isPending?<Loader2 className="w-4 h-4 mr-2 animate-spin"/>:<RefreshCw className="w-4 h-4 mr-2"/>}Sincronizar
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      {/* TAB 3: GERAIS E SISTEMA */}
+      <TabsContent value="gerais" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Regras de Negócio</CardTitle>
+            <CardDescription>Configurações padrões do SaaS.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Dias de Trial Padrão (Novos Restaurantes)</label>
+              <div className="flex gap-2">
+                <Input type="number" value={form.default_trial_days || ''} onChange={(e) => handleChange('default_trial_days', e.target.value)} />
+                <Button variant="secondary" onClick={() => handleSaveSetting('default_trial_days')} disabled={isPending}>Salvar</Button>
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-4 border-t">
+              <label className="text-sm font-medium">Taxas Base dos Planos (Leitura)</label>
+              <div className="space-y-2">
+                {plans.map(plan => (
+                  <div key={plan.id} className="flex justify-between items-center bg-muted p-2 rounded text-sm">
+                    <span className="uppercase font-semibold text-muted-foreground">{plan.name}</span>
+                    <span className="font-bold">{plan.default_fee_pct}%</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">Para alterar estas taxas, acesse a aba Planos.</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-orange-200 bg-orange-50/30 dark:bg-orange-950/10">
+          <CardHeader>
+            <CardTitle className="text-orange-700 dark:text-orange-500 flex items-center gap-2">
+              <Settings className="w-5 h-5" /> Operações de Suporte
+            </CardTitle>
+            <CardDescription>Ferramentas avançadas para manutenção da plataforma.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="p-4 border border-orange-200 rounded-lg bg-background">
+              <h4 className="font-semibold text-sm mb-1">Forçar Sincronização JWT</h4>
+              <p className="text-xs text-muted-foreground mb-4">
+                Força a renovação dos metadados de autenticação de todos os usuários. Útil após mudanças massivas em roles diretamente no banco de dados.
+              </p>
+              <Button
+                variant="outline"
+                className="w-full border-orange-300 text-orange-700 hover:bg-orange-100"
+                onClick={handleSyncRoles}
+                disabled={isPending}
+              >
+                {isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-2" />}
+                Sincronizar Roles Agora
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </TabsContent>
+    </Tabs>
   )
 }

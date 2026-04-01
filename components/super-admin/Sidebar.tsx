@@ -31,14 +31,16 @@ const navItems = [
   { name: 'Configurações', href: '/super-admin/configuracoes', icon: Settings },
 ]
 
-function SidebarContent({ onNav }: { onNav?: () => void }) {
+function SidebarContent({ adminName, onNav }: { adminName: string; onNav?: () => void }) {
   const pathname = usePathname()
   const [openGroups, setOpenGroups] = useState<string[]>(() =>
     navItems.filter(i => i.subItems?.some(s => pathname.startsWith(s.href))).map(i => i.name)
   )
   const toggle = (name: string) =>
     setOpenGroups(p => p.includes(name) ? p.filter(n => n !== name) : [...p, name])
-  const initials = (name: string) => name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+
+  const initials = (name: string) =>
+    name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
 
   return (
     <div className="flex flex-col h-full bg-zinc-900 text-zinc-300">
@@ -98,10 +100,10 @@ function SidebarContent({ onNav }: { onNav?: () => void }) {
       <div className="p-3 border-t border-zinc-800">
         <div className="flex items-center gap-3 px-2 mb-3">
           <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-xs font-bold text-white">
-            {initials(onNav ? 'Admin' : 'A')}
+            {initials(adminName)}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">Administrador</p>
+            <p className="text-sm font-medium text-white truncate">{adminName}</p>
             <p className="text-xs text-zinc-500">Super Admin</p>
           </div>
         </div>
@@ -121,7 +123,6 @@ export function Sidebar({ adminName }: Props) {
 
   return (
     <>
-      {/* Mobile topbar */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-zinc-900 border-b border-zinc-800 flex items-center px-4 z-50 gap-3">
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
@@ -130,7 +131,7 @@ export function Sidebar({ adminName }: Props) {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-64 border-zinc-800 bg-zinc-900">
-            <SidebarContent onNav={() => setOpen(false)} />
+            <SidebarContent adminName={adminName} onNav={() => setOpen(false)} />
           </SheetContent>
         </Sheet>
         <div className="flex items-center gap-2">
@@ -141,9 +142,8 @@ export function Sidebar({ adminName }: Props) {
         </div>
       </div>
 
-      {/* Desktop sidebar */}
       <aside className="hidden lg:flex flex-col w-64 fixed inset-y-0 left-0 z-50">
-        <SidebarContent />
+        <SidebarContent adminName={adminName} />
       </aside>
     </>
   )
