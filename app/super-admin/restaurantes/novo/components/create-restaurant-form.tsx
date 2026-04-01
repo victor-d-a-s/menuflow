@@ -162,15 +162,15 @@ export function CreateRestaurantForm() {
               </FormItem>
             )} />
 
-            <div className="flex flex-col gap-4 p-4 border rounded-md bg-muted/30">
+            <div className="grid grid-cols-1 gap-3 p-4 border rounded-md bg-muted/30">
               <FormField control={form.control} name="deliveryEnabled" render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg">
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 h-12">
                   <FormLabel className="text-base">Delivery Habilitado</FormLabel>
                   <FormControl><Switch checked={field.value} onCheckedChange={field.onChange} /></FormControl>
                 </FormItem>
               )} />
               <FormField control={form.control} name="tableMenuEnabled" render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg">
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 h-12">
                   <FormLabel className="text-base">Cardápio de Mesa</FormLabel>
                   <FormControl><Switch checked={field.value} onCheckedChange={field.onChange} /></FormControl>
                 </FormItem>
