@@ -10,8 +10,9 @@ import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
@@ -22,7 +23,6 @@ import { createUser, deleteUser, resetUserPassword, createUserSchema, type Creat
 interface Restaurant { id: string; name: string }
 interface User { id: string; full_name: string }
 
-// --- DIALOG DE NOVO USUÁRIO ---
 export function NewUserDialog({ restaurants }: { restaurants: Restaurant[] }) {
   const [open, setOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
@@ -47,17 +47,18 @@ export function NewUserDialog({ restaurants }: { restaurants: Restaurant[] }) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
         <Button><Plus className="w-4 h-4 mr-2" />Novo Usuário</Button>
-      </DialogTrigger>
-      <DialogContent className="w-full max-w-md mx-4">
-        <DialogHeader>
-          <DialogTitle>Adicionar Novo Usuário</DialogTitle>
-          <DialogDescription>Preencha os dados para criar um novo membro da plataforma.</DialogDescription>
-        </DialogHeader>
+      </SheetTrigger>
+      <SheetContent className="w-full sm:max-w-md overflow-y-auto">
+        <SheetHeader className="mb-6">
+          <SheetTitle>Adicionar Novo Usuário</SheetTitle>
+          <SheetDescription>Preencha os dados para criar um novo membro da plataforma.</SheetDescription>
+        </SheetHeader>
+
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
 
             <FormField control={form.control} name="fullName" render={({ field }) => (
               <FormItem>
@@ -79,7 +80,7 @@ export function NewUserDialog({ restaurants }: { restaurants: Restaurant[] }) {
               <FormItem>
                 <FormLabel>Senha Temporária *</FormLabel>
                 <FormControl><Input type="password" placeholder="Mínimo 8 caracteres" {...field} /></FormControl>
-                <p className="text-xs text-muted-foreground">O usuário poderá alterar a senha depois.</p>
+                <p className="text-xs text-muted-foreground mt-1">O usuário poderá alterar a senha depois.</p>
                 <FormMessage />
               </FormItem>
             )} />
@@ -88,9 +89,7 @@ export function NewUserDialog({ restaurants }: { restaurants: Restaurant[] }) {
               <FormItem>
                 <FormLabel>Cargo *</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                  </FormControl>
+                  <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
                   <SelectContent position="popper">
                     <SelectItem value="super_admin">Super Admin</SelectItem>
                     <SelectItem value="restaurant_admin">Admin do Restaurante</SelectItem>
@@ -106,9 +105,7 @@ export function NewUserDialog({ restaurants }: { restaurants: Restaurant[] }) {
                 <FormItem>
                   <FormLabel>Vincular ao Restaurante *</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger><SelectValue placeholder="Selecione o restaurante" /></SelectTrigger>
-                    </FormControl>
+                    <FormControl><SelectTrigger><SelectValue placeholder="Selecione o restaurante" /></SelectTrigger></FormControl>
                     <SelectContent position="popper">
                       <SelectItem value="none">Selecione...</SelectItem>
                       {restaurants.map(rest => (
@@ -121,11 +118,11 @@ export function NewUserDialog({ restaurants }: { restaurants: Restaurant[] }) {
               )} />
             )}
 
-            <div className="flex justify-end gap-2 pt-2 border-t">
-              <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>
+            <div className="flex gap-3 pt-4 border-t">
+              <Button type="button" variant="outline" className="flex-1" onClick={() => { setOpen(false); form.reset() }}>
                 Cancelar
               </Button>
-              <Button type="submit" disabled={isPending}>
+              <Button type="submit" disabled={isPending} className="flex-1">
                 {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Criar Usuário
               </Button>
@@ -133,12 +130,11 @@ export function NewUserDialog({ restaurants }: { restaurants: Restaurant[] }) {
 
           </form>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   )
 }
 
-// --- FILTROS ---
 export function UserFilters({ restaurants }: { restaurants: Restaurant[] }) {
   const router = useRouter()
   const pathname = usePathname()
@@ -194,7 +190,6 @@ export function UserFilters({ restaurants }: { restaurants: Restaurant[] }) {
   )
 }
 
-// --- AÇÕES DA LINHA ---
 export function UserRowActions({ user }: { user: User }) {
   const [isPending, startTransition] = useTransition()
 
