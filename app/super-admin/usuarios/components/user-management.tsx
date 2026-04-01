@@ -48,58 +48,89 @@ export function NewUserDialog({ restaurants }: { restaurants: Restaurant[] }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild><Button><Plus className="w-4 h-4 mr-2" />Novo Usuário</Button></DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogTrigger asChild>
+        <Button><Plus className="w-4 h-4 mr-2" />Novo Usuário</Button>
+      </DialogTrigger>
+      <DialogContent className="w-full max-w-md mx-4">
         <DialogHeader>
           <DialogTitle>Adicionar Novo Usuário</DialogTitle>
-          <DialogDescription>Preencha os dados para criar um novo membro.</DialogDescription>
+          <DialogDescription>Preencha os dados para criar um novo membro da plataforma.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-2">
+
             <FormField control={form.control} name="fullName" render={({ field }) => (
-              <FormItem><FormLabel>Nome Completo *</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+              <FormItem>
+                <FormLabel>Nome Completo *</FormLabel>
+                <FormControl><Input placeholder="Ex: João Silva" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
             )} />
+
             <FormField control={form.control} name="email" render={({ field }) => (
-              <FormItem><FormLabel>E-mail *</FormLabel><FormControl><Input type="email" {...field} /></FormControl><FormMessage /></FormItem>
+              <FormItem>
+                <FormLabel>E-mail *</FormLabel>
+                <FormControl><Input type="email" placeholder="joao@restaurante.com" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
             )} />
+
             <FormField control={form.control} name="password" render={({ field }) => (
-              <FormItem><FormLabel>Senha Temporária *</FormLabel><FormControl><Input type="password" {...field} /></FormControl><FormMessage /></FormItem>
+              <FormItem>
+                <FormLabel>Senha Temporária *</FormLabel>
+                <FormControl><Input type="password" placeholder="Mínimo 8 caracteres" {...field} /></FormControl>
+                <p className="text-xs text-muted-foreground">O usuário poderá alterar a senha depois.</p>
+                <FormMessage />
+              </FormItem>
             )} />
+
             <FormField control={form.control} name="role" render={({ field }) => (
-              <FormItem><FormLabel>Cargo *</FormLabel>
+              <FormItem>
+                <FormLabel>Cargo *</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
+                  <FormControl>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                  </FormControl>
                   <SelectContent position="popper">
                     <SelectItem value="super_admin">Super Admin</SelectItem>
                     <SelectItem value="restaurant_admin">Admin do Restaurante</SelectItem>
-                    <SelectItem value="kitchen">Cozinha/Operação</SelectItem>
+                    <SelectItem value="kitchen">Cozinha / Operação</SelectItem>
                   </SelectContent>
-                </Select><FormMessage />
+                </Select>
+                <FormMessage />
               </FormItem>
             )} />
 
             {watchRole !== 'super_admin' && (
               <FormField control={form.control} name="restaurantId" render={({ field }) => (
-                <FormItem><FormLabel>Vincular ao Restaurante *</FormLabel>
+                <FormItem>
+                  <FormLabel>Vincular ao Restaurante *</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl><SelectTrigger><SelectValue placeholder="Selecione o restaurante" /></SelectTrigger></FormControl>
+                    <FormControl>
+                      <SelectTrigger><SelectValue placeholder="Selecione o restaurante" /></SelectTrigger>
+                    </FormControl>
                     <SelectContent position="popper">
                       <SelectItem value="none">Selecione...</SelectItem>
                       {restaurants.map(rest => (
                         <SelectItem key={rest.id} value={rest.id}>{rest.name}</SelectItem>
                       ))}
                     </SelectContent>
-                  </Select><FormMessage />
+                  </Select>
+                  <FormMessage />
                 </FormItem>
               )} />
             )}
 
-            <div className="flex justify-end pt-4">
+            <div className="flex justify-end gap-2 pt-2 border-t">
+              <Button type="button" variant="outline" onClick={() => { setOpen(false); form.reset() }}>
+                Cancelar
+              </Button>
               <Button type="submit" disabled={isPending}>
                 {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Criar Usuário
               </Button>
             </div>
+
           </form>
         </Form>
       </DialogContent>
@@ -114,7 +145,6 @@ export function UserFilters({ restaurants }: { restaurants: Restaurant[] }) {
   const searchParams = useSearchParams()
   const [isPending, startTransition] = useTransition()
   const [search, setSearch] = useState(searchParams.get('busca') || '')
-  // ✅ Ref para evitar loop infinito no debounce
   const prevSearchRef = useRef(search)
 
   const updateParams = (updates: Record<string, string>) => {
@@ -127,7 +157,6 @@ export function UserFilters({ restaurants }: { restaurants: Restaurant[] }) {
     startTransition(() => router.replace(`${pathname}?${params.toString()}`))
   }
 
-  // ✅ Sem searchParams nas dependências — evita loop infinito
   useEffect(() => {
     if (search === prevSearchRef.current) return
     const timer = setTimeout(() => {
@@ -178,10 +207,8 @@ export function UserRowActions({ user }: { user: User }) {
   }
 
   const handleResetPassword = () => {
-    // ✅ Em produção substituir prompt() por Dialog dedicado
     const newPass = prompt(`Nova senha temporária para ${user.full_name} (mínimo 8 caracteres):`)
     if (!newPass) return
-
     startTransition(async () => {
       const res = await resetUserPassword(user.id, newPass)
       if (res?.error) toast.error(res.error)
