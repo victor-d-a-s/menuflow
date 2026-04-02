@@ -9,14 +9,10 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import {
   LayoutDashboard, UtensilsCrossed, Receipt, Table2,
-  Settings, LogOut, Menu, ChevronDown, ChevronRight
+  Settings, LogOut, Menu
 } from 'lucide-react'
 
-type Props = {
-  restaurantName: string
-  adminName: string
-  plan: string
-}
+type Props = { restaurantName: string; adminName: string; plan: string }
 
 const navItems = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -26,11 +22,7 @@ const navItems = [
   { name: 'Configurações', href: '/admin/configuracoes', icon: Settings },
 ]
 
-const planLabel: Record<string, string> = {
-  basico: 'Básico',
-  pro: 'Pro',
-  ultra: 'Ultra',
-}
+const planLabel: Record<string, string> = { basico: 'Básico', pro: 'Pro', ultra: 'Ultra' }
 
 function SidebarContent({ restaurantName, adminName, plan, onNav }: Props & { onNav?: () => void }) {
   const pathname = usePathname()
@@ -55,13 +47,9 @@ function SidebarContent({ restaurantName, adminName, plan, onNav }: Props & { on
         {navItems.map(item => {
           const isActive = pathname.startsWith(item.href)
           return (
-            <Link
-              key={item.name}
-              href={item.href}
-              onClick={onNav}
+            <Link key={item.name} href={item.href} onClick={onNav}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                ${isActive ? 'bg-[#c8410a]/20 text-[#e8622a]' : 'hover:bg-zinc-800 hover:text-white'}`}
-            >
+                ${isActive ? 'bg-[#c8410a]/20 text-[#e8622a]' : 'hover:bg-zinc-800 hover:text-white'}`}>
               <item.icon className={`w-4 h-4 ${isActive ? 'text-[#e8622a]' : 'text-zinc-500'}`} />
               {item.name}
             </Link>
@@ -92,10 +80,8 @@ function SidebarContent({ restaurantName, adminName, plan, onNav }: Props & { on
 
 export function AdminSidebar({ restaurantName, adminName, plan }: Props) {
   const [open, setOpen] = useState(false)
-
   return (
     <>
-      {/* Mobile topbar */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-zinc-900 border-b border-zinc-800 flex items-center px-4 z-50 gap-3">
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
@@ -104,12 +90,7 @@ export function AdminSidebar({ restaurantName, adminName, plan }: Props) {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-64 border-zinc-800 bg-zinc-900">
-            <SidebarContent
-              restaurantName={restaurantName}
-              adminName={adminName}
-              plan={plan}
-              onNav={() => setOpen(false)}
-            />
+            <SidebarContent restaurantName={restaurantName} adminName={adminName} plan={plan} onNav={() => setOpen(false)} />
           </SheetContent>
         </Sheet>
         <div className="flex items-center gap-2">
@@ -119,8 +100,6 @@ export function AdminSidebar({ restaurantName, adminName, plan }: Props) {
           <span className="font-bold text-white truncate">{restaurantName}</span>
         </div>
       </div>
-
-      {/* Desktop sidebar */}
       <aside className="hidden lg:flex flex-col w-64 fixed inset-y-0 left-0 z-50">
         <SidebarContent restaurantName={restaurantName} adminName={adminName} plan={plan} />
       </aside>
